@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.12'
+    }
+}
+
+plugins {
+    id "java"
+    id "idea"
+    id "com.google.protobuf" version "0.8.12"
+}
+
+repositories {
+    mavenCentral()
+}
+
+group 'com.datapack'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+ext.protoVersion = '3.11.4'
+ext.caffeineVersion = '2.8.1'
+
+dependencies {
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: protoVersion
+    compile group: 'com.google.protobuf', name: 'protobuf-java-util', version: protoVersion
+    compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: caffeineVersion
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/proto'
+        }
+        java {
+            srcDirs =  ['src/main/java', 'generated/main/java']
+        }
+    }
+}
+
+clean {
+    delete "generated"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protoVersion}"
+    }
+    generatedFilesBaseDir = "generated"
+    generateProtoTasks {
+        all()*.plugins {}
+    }
+}

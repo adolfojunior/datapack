@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "com.datapack.data";
+option java_outer_classname = "DataProto";
+
+message Keys {
+    map<string, string> map = 1;
+}
+
+message Index {
+    Keys keys = 1;
+    int64 timestamp = 2;
+    string file = 3;
+    int64 offset = 4;
+    int32 length = 5;
+}
+
+message Data {
+    Keys keys = 1;
+    int64 timestamp = 2;
+    string data = 3;
+}
+
+message IndexList {
+    repeated Index entries = 1;
+}
